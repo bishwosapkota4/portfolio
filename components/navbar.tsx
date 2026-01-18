@@ -2,7 +2,7 @@
 
 import { Menu, Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 
@@ -12,6 +12,7 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState("home")
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const isMobile = useIsMobile()
+  const menuRef = useRef<HTMLDivElement>(null)
 
   const sections = ["home", "about", "experience", "projects", "contact"]
 
@@ -35,8 +36,18 @@ export function Navbar() {
       }
     }
 
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false)
+      }
+    }
+
     window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
   }, [])
 
   const scrollToSection = (sectionId: string) => {
@@ -51,7 +62,7 @@ export function Navbar() {
   return (
     <nav className="fixed top-4 left-0 right-0 z-50 px-4">
       {isMobile ? (
-        <div className="flex items-center justify-between rounded-full bg-card/80 backdrop-blur-md border border-border shadow-lg px-4 py-2">
+        <div ref={menuRef} className="flex items-center justify-between rounded-full bg-card/80 backdrop-blur-md border border-border shadow-lg px-4 py-2">
           <span className="text-sm font-medium">Bishwo Sapkota</span>
           <div className="flex items-center gap-2">
             <Button
@@ -76,9 +87,11 @@ export function Navbar() {
           </div>
 
           {isMenuOpen && (
-            <div className="absolute right-4 top-14 w-48 rounded-2xl bg-card border border-border shadow-lg py-2">
-              {sections.map((section) => {
+            <div className="absolute right-4 top-14 w-48 rounded-2xl bg-card border border-border shadow-lg overflow-hidden">
+              {sections.map((section, index) => {
                 const label = section.charAt(0).toUpperCase() + section.slice(1)
+                const isFirst = index === 0
+                const isLast = index === sections.length - 1
                 return (
                   <button
                     key={section}
@@ -90,6 +103,10 @@ export function Navbar() {
                       activeSection === section
                         ? "bg-primary text-primary-foreground"
                         : "text-foreground hover:bg-muted"
+                    } ${
+                      isFirst ? "rounded-t-2xl" : ""
+                    } ${
+                      isLast ? "rounded-b-2xl" : ""
                     }`}
                   >
                     {label}

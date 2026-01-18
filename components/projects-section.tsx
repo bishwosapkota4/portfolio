@@ -5,28 +5,29 @@ import { useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { ExternalLink, Github } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 const projects = [
   {
     title: 'Certiyi Trust Center',
     description: 'Enterprise-grade multi-tenant platform for security compliance and trust management. Features dynamic branding, RBAC, and real-time reporting.',
-    image: '/api/placeholder/600/400',
+    image: '/certifyitrust.png',
     tags: ['Laravel', 'React', 'PostgreSQL', 'Multi-tenancy'],
-    link: '#',
+    link: 'https://trust.certifyi.ai/',
     github: '#',
   },
   {
     title: 'Orkest TimeApp',
     description: 'Intelligent time tracking browser extension with automatic activity detection and seamless project management integration.',
-    image: '/api/placeholder/600/400',
+    image: '/orkest-timesheet.png',
     tags: ['Chrome Extension', 'JavaScript', 'REST APIs'],
-    link: '#',
+    link: 'https://chromewebstore.google.com/detail/Orkest%20Timesheet/nfloafdhlidblcbapcablepdcibinfgj',
     github: '#',
   },
   {
     title: 'Nampa HRM System',
     description: 'Comprehensive HR management platform with automated workflows, queued email systems, and employee lifecycle management.',
-    image: '/api/placeholder/600/400',
+    image: '/placeholder.svg',
     tags: ['Laravel', 'Queue Jobs', 'MySQL', 'Automation'],
     link: '#',
     github: '#',
@@ -58,18 +59,28 @@ export function ProjectsSection() {
               transition={{ duration: 0.6, delay: index * 0.2 }}
               className="group"
             >
-              <div className="h-full p-6 rounded-2xl bg-card border border-border shadow-sm hover:shadow-md transition-all">
-                <div className="mb-4 rounded-xl overflow-hidden bg-muted aspect-video flex items-center justify-center">
-                  <svg className="w-16 h-16 text-muted-foreground/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-serif font-semibold mb-2 group-hover:text-primary transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                  {project.description}
-                </p>
+              <div className="h-full p-6 rounded-2xl bg-card border border-border shadow-sm hover:shadow-md transition-all overflow-hidden">
+                <a 
+                  href={project.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <div className="mb-4 rounded-xl overflow-hidden bg-muted aspect-video relative">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-contain p-4"
+                    />
+                  </div>
+                  <h3 className="text-xl font-serif font-semibold mb-2 group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                    {project.description}
+                  </p>
+                </a>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tags.map((tag) => (
                     <span
@@ -81,13 +92,17 @@ export function ProjectsSection() {
                   ))}
                 </div>
                 <div className="flex gap-2">
-                  <Button size="sm" variant="ghost" className="gap-2">
-                    <ExternalLink className="h-3 w-3" />
-                    View
+                  <Button size="sm" variant="ghost" className="gap-2" asChild>
+                    <a href={project.link} target="_blank" rel="noopener noreferrer">
+                      <ExternalLink className="h-3 w-3" />
+                      View
+                    </a>
                   </Button>
-                  <Button size="sm" variant="ghost" className="gap-2">
-                    <Github className="h-3 w-3" />
-                    Code
+                  <Button size="sm" variant="ghost" className="gap-2" asChild>
+                    <a href={project.github} target="_blank" rel="noopener noreferrer">
+                      <Github className="h-3 w-3" />
+                      Code
+                    </a>
                   </Button>
                 </div>
               </div>

@@ -1,0 +1,100 @@
+'use client'
+
+import { motion } from 'framer-motion'
+import { useInView } from 'framer-motion'
+import { useRef } from 'react'
+import { ExternalLink, Github } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+
+const projects = [
+  {
+    title: 'Certiyi Trust Center',
+    description: 'Enterprise-grade multi-tenant platform for security compliance and trust management. Features dynamic branding, RBAC, and real-time reporting.',
+    image: '/api/placeholder/600/400',
+    tags: ['Laravel', 'React', 'PostgreSQL', 'Multi-tenancy'],
+    link: '#',
+    github: '#',
+  },
+  {
+    title: 'Orkest TimeApp',
+    description: 'Intelligent time tracking browser extension with automatic activity detection and seamless project management integration.',
+    image: '/api/placeholder/600/400',
+    tags: ['Chrome Extension', 'JavaScript', 'REST APIs'],
+    link: '#',
+    github: '#',
+  },
+  {
+    title: 'Nampa HRM System',
+    description: 'Comprehensive HR management platform with automated workflows, queued email systems, and employee lifecycle management.',
+    image: '/api/placeholder/600/400',
+    tags: ['Laravel', 'Queue Jobs', 'MySQL', 'Automation'],
+    link: '#',
+    github: '#',
+  },
+]
+
+export function ProjectsSection() {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-100px' })
+
+  return (
+    <section id="projects" ref={ref} className="min-h-screen flex items-center justify-center px-6 py-20">
+      <div className="max-w-6xl mx-auto w-full">
+        <motion.h2
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+          className="text-4xl md:text-6xl font-serif font-bold mb-12 text-balance"
+        >
+          Featured <span className="text-primary">Projects</span>
+        </motion.h2>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+              className="group"
+            >
+              <div className="h-full p-6 rounded-2xl bg-card border border-border shadow-sm hover:shadow-md transition-all">
+                <div className="mb-4 rounded-xl overflow-hidden bg-muted aspect-video flex items-center justify-center">
+                  <svg className="w-16 h-16 text-muted-foreground/30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-serif font-semibold mb-2 group-hover:text-primary transition-colors">
+                  {project.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-4">
+                  {project.description}
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2 py-1 text-xs rounded-md bg-muted text-muted-foreground"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex gap-2">
+                  <Button size="sm" variant="ghost" className="gap-2">
+                    <ExternalLink className="h-3 w-3" />
+                    View
+                  </Button>
+                  <Button size="sm" variant="ghost" className="gap-2">
+                    <Github className="h-3 w-3" />
+                    Code
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
